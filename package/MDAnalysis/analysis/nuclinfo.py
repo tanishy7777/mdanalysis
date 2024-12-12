@@ -299,7 +299,7 @@ def phase_cp(universe, seg, i):
          + (r3_d * cos(4 * pi * 2.0 / 5.0)) + (r4_d * cos(4 * pi * 3.0 / 5.0))
          + (r5_d * cos(4 * pi * 4.0 / 5.0))) * sqrt(2.0 / 5.0)
 
-    phase_ang = (atan2(D, C) + (pi / 2.)) * 180. / pi
+    phase_ang = (np.arctan2(D, C) + (pi / 2.)) * 180. / pi
     return phase_ang % 360
 
 
