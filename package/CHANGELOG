@@ -14,11 +14,12 @@ The rules for this file:
 
 
 -------------------------------------------------------------------------------
-??/??/?? IAlibay, ChiahsinChu, RMeli
+??/??/?? IAlibay, ChiahsinChu, RMeli, tanishy7777
 
  * 2.9.0
 
 Fixes
+ * Fixed array to scalar deprecation warning by using np.atan2() instead of atan2()
 
 Enhancements
  * Add check and warning for empty (all zero) coordinates in RDKit converter (PR #4824)
