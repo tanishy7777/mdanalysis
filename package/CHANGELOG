@@ -19,6 +19,7 @@ The rules for this file:
  * 2.9.0
 
 Fixes
+ * Fixes deprecation warning Array to scalar convertion. Replaced atan2() with np.arctan2() (Issue #4339)
  * Replaced mutable defaults with None and initialized them within
    the function to prevent shared state. (Issue #4655)
 
