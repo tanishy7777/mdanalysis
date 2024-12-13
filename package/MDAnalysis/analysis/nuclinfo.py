@@ -93,7 +93,7 @@ Dihedral angles
 
 """
 import numpy as np
-from math import pi, sin, cos, atan2, sqrt, pow
+from math import pi, sin, cos, sqrt, pow
 
 from MDAnalysis.lib import mdamath
 
@@ -368,7 +368,7 @@ def phase_as(universe, seg, i):
          + (data4 * cos(2 * 2 * pi * (4 - 1.) / 5.))
          + (data5 * cos(2 * 2 * pi * (5 - 1.) / 5.))) * 2. / 5.
 
-    phase_ang = atan2(B, A) * 180. / pi
+    phase_ang = np.arctan2(B, A) * 180. / pi
     return phase_ang % 360
 
 
