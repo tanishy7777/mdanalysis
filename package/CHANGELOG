@@ -14,11 +14,12 @@ The rules for this file:
 
 
 -------------------------------------------------------------------------------
-??/??/?? IAlibay, ChiahsinChu, RMeli
+??/??/?? IAlibay, ChiahsinChu, RMeli, tanishy7777
 
  * 2.9.0
 
 Fixes
+ * Fixes invalid default unit from Angstrom to Angstrom^{-3} for convert_density() function. (Issue #4829)
 
 Enhancements
  * Add check and warning for empty (all zero) coordinates in RDKit converter (PR #4824)
