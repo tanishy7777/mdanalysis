@@ -384,7 +384,7 @@ class TestDensityAnalysis(DensityParameters):
         with pytest.warns(DeprecationWarning, match=wmsg):
             assert_equal(D.density.grid, D.results.density.grid)
 
-    def test_density_analysis_invalid_unit(self):
+    def test_density_analysis_conversion_default_unit(self):
         u = mda.Universe(TPR, XTC)
         ow = u.select_atoms("name OW")
         D = mda.analysis.density.DensityAnalysis(ow, delta=1.0)
