@@ -20,6 +20,9 @@ The rules for this file:
 
 Fixes
  * Fixes invalid default unit from Angstrom to Angstrom^{-3} for convert_density() function. (Issue #4829)
+ * Fixes deprecation warning Array to scalar convertion. Replaced atan2() with np.arctan2() (Issue #4339)
+ * Replaced mutable defaults with None and initialized them within
+   the function to prevent shared state. (Issue #4655)
 
 Enhancements
  * Add check and warning for empty (all zero) coordinates in RDKit converter (PR #4824)
