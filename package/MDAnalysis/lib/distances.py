@@ -401,8 +401,8 @@ def self_distance_array(
 
             for i in range(n):
                 for j in range(i + 1, n):
-                    k += 1
-                    dist[i, j] = d[k]
+                    dist[i, j] = dist[j, i] = d[k]
+                    k += 1   
 
 
     .. versionchanged:: 0.13.0
