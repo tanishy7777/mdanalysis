@@ -23,7 +23,6 @@ Fixes
  * Fixes deprecation warning Array to scalar convertion. Replaced atan2() with np.arctan2() (Issue #4339)
  * Replaced mutable defaults with None and initialized them within
    the function to prevent shared state. (Issue #4655)
- * Updated the docs for the self_distance_array function in package/MDAnalysis/lib/distances.py (Issue #4731) 
 
 Enhancements
  * Enable parallelization for analysis.nucleicacids.NucPairDist (Issue #4670)
