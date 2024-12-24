@@ -137,6 +137,7 @@ tables\.py
 | MDAnalysis/transformations/.*\.py
 | MDAnalysis/guesser/.*\.py
 | MDAnalysis/converters/.*\.py
+| MDAnalysis/tests/.*\.py
 | MDAnalysis/selections/.*\.py
 )
 '''
