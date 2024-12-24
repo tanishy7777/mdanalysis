@@ -137,6 +137,7 @@ tables\.py
 | MDAnalysis/transformations/.*\.py
 | MDAnalysis/guesser/.*\.py
 | MDAnalysis/converters/.*\.py
+| MDAnalysis/coordinates/.*\.py
 | MDAnalysis/tests/.*\.py
 | MDAnalysis/selections/.*\.py
 )
@@ -186,6 +187,7 @@ __pycache__
 | MDAnalysis/coordinates/chemfiles\.py
 | MDAnalysis/coordinates/memory\.py
 | MDAnalysis/core/universe\.py
+| .*\.pyx
 )
 '''
 required-version = '24'
