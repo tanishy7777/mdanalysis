@@ -26,6 +26,7 @@ import MDAnalysis as mda
 from MDAnalysis.analysis import polymer
 from MDAnalysis.exceptions import NoDataError
 from MDAnalysis.core.topologyattrs import Bonds
+import MDAnalysis
 
 import numpy as np
 import matplotlib
@@ -53,8 +54,8 @@ class TestPersistenceLength(object):
 
     @staticmethod
     @pytest.fixture()
-    def p_run(p):
-        return p.run()
+    def p_run(p, client_PersistenceLength):
+        return p.run(**client_PersistenceLength)
 
     def test_ag_ValueError(self, u):
         ags = [u.atoms[:10], u.atoms[10:110]]
@@ -97,8 +98,8 @@ class TestPersistenceLength(object):
         assert ax2 is not ax
 
     @pytest.mark.parametrize("attr", ("lb", "lp", "fit"))
-    def test(self, p, attr):
-        p_run = p.run(step=3)
+    def test(self, p, attr, client_PersistenceLength):
+        p_run = p.run(step=3, **client_PersistenceLength)
         wmsg = f"The `{attr}` attribute was deprecated in MDAnalysis 2.0.0"
         with pytest.warns(DeprecationWarning, match=wmsg):
             getattr(p_run, attr) is p_run.results[attr]
@@ -167,3 +168,25 @@ class TestSortBackbone(object):
         with pytest.raises(ValueError) as ex:
             polymer.sort_backbone(u.atoms)
         assert 'cyclical' in str(ex.value)
+
+# tests for parallelization
+
+@pytest.mark.parametrize(
+    "classname,is_parallelizable",
+    [
+        (MDAnalysis.analysis.polymer.PersistenceLength , True),
+    ]
+)
+def test_class_is_parallelizable(classname, is_parallelizable):
+    assert classname._analysis_algorithm_is_parallelizable == is_parallelizable
+
+
+@pytest.mark.parametrize(
+    "classname,backends",
+    [
+        (MDAnalysis.analysis.polymer.PersistenceLength,
+         ('serial', 'multiprocessing', 'dask',)),
+    ]
+)
+def test_supported_backends(classname, backends):
+    assert classname.get_supported_backends() == backends

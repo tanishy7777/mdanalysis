@@ -41,6 +41,7 @@ from .. import NoDataError
 from ..core.groups import requires, AtomGroup
 from ..lib.distances import calc_bonds
 from .base import AnalysisBase
+from .results import ResultsGroup
 
 logger = logging.getLogger(__name__)
 
@@ -228,7 +229,17 @@ class PersistenceLength(AnalysisBase):
        Former ``results`` are now stored as ``results.bond_autocorrelation``.
        :attr:`lb`, :attr:`lp`, :attr:`fit` are now stored in a
        :class:`MDAnalysis.analysis.base.Results` instance.
+    .. versionchanged:: 2.9.0
+       Enabled **parallel execution** with the ``multiprocessing`` and ``dask``
+       backends; use the new method :meth:`get_supported_backends` to see all
+       supported backends.
     """
+    @classmethod
+    def get_supported_backends(cls):
+        return ('serial', 'multiprocessing', 'dask',)
+
+    _analysis_algorithm_is_parallelizable = True
+
     def __init__(self, atomgroups, **kwargs):
         super(PersistenceLength, self).__init__(
             atomgroups[0].universe.trajectory, **kwargs)
@@ -293,6 +304,9 @@ class PersistenceLength(AnalysisBase):
         self._calc_bond_length()
 
         self._perform_fit()
+
+    def _get_aggregator(self):
+        return ResultsGroup(lookup={'bond_autocorrelation': ResultsGroup.ndarray_sum})
 
     def _calc_bond_length(self):
         """calculate average bond length"""
