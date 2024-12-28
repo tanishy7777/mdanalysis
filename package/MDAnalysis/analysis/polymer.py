@@ -40,8 +40,7 @@ import logging
 from .. import NoDataError
 from ..core.groups import requires, AtomGroup
 from ..lib.distances import calc_bonds
-from .base import AnalysisBase
-from .results import ResultsGroup
+from .base import AnalysisBase, ResultsGroup
 
 logger = logging.getLogger(__name__)
 
@@ -306,7 +305,7 @@ class PersistenceLength(AnalysisBase):
         self._perform_fit()
 
     def _get_aggregator(self):
-        return ResultsGroup(lookup={'bond_autocorrelation': ResultsGroup.ndarray_sum})
+        return ResultsGroup(lookup={'bond_autocorrelation': ResultsGroup.ndarray_vstack})
 
     def _calc_bond_length(self):
         """calculate average bond length"""
