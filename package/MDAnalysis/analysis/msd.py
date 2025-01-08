@@ -242,7 +242,7 @@ Classes
 import numpy as np
 import logging
 from ..due import due, Doi
-from .base import AnalysisBase
+from .base import AnalysisBase, ResultsGroup
 from ..core import groups
 from tqdm import tqdm
 
@@ -300,6 +300,12 @@ class EinsteinMSD(AnalysisBase):
 
     .. versionadded:: 2.0.0
     """
+
+    @classmethod
+    def get_supported_backends(cls):
+        return ('serial',)
+
+    _analysis_algorithm_is_parallelizable = False
 
     def __init__(self, u, select="all", msd_type="xyz", fft=True, **kwargs):
         r"""

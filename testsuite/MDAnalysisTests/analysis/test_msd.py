@@ -272,3 +272,21 @@ class TestMSDFFT(object):
         norm = np.linalg.norm(msd_rw.results.timeseries)
         val = 3932.39927487146
         assert_almost_equal(norm, val, decimal=5)
+        
+@pytest.mark.parametrize(
+    "classname,is_parallelizable",
+    [
+        (mda.analysis.msd, False),
+    ]
+)
+def test_class_is_parallelizable(classname, is_parallelizable):
+    assert classname.EinsteinMSD._analysis_algorithm_is_parallelizable == is_parallelizable
+
+@pytest.mark.parametrize(
+    "classname,backends",
+    [
+        (mda.analysis.msd,  ('serial',)),
+    ]
+)
+def test_supported_backends(classname, backends):
+    assert classname.EinsteinMSD.get_supported_backends() == backends
