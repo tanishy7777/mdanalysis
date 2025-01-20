@@ -194,7 +194,9 @@ class TestMSDFFT(object):
         assert_almost_equal(per_particle_simple, per_particle_fft, decimal=4)
 
     @pytest.mark.parametrize("dim", ["xyz", "xy", "xz", "yz", "x", "y", "z"])
-    def test_fft_vs_simple_all_dims(self, u, SELECTION, dim, client_EinsteinMSD):
+    def test_fft_vs_simple_all_dims(
+        self, u, SELECTION, dim, client_EinsteinMSD
+    ):
         # check fft and simple give same result for each dimensionality
         m_simple = MSD(u, SELECTION, msd_type=dim, fft=False)
         m_simple.run(**client_EinsteinMSD)
@@ -205,7 +207,9 @@ class TestMSDFFT(object):
         assert_almost_equal(timeseries_simple, timeseries_fft, decimal=4)
 
     @pytest.mark.parametrize("dim", ["xyz", "xy", "xz", "yz", "x", "y", "z"])
-    def test_fft_vs_simple_all_dims_per_particle(self, u, SELECTION, dim, client_EinsteinMSD):
+    def test_fft_vs_simple_all_dims_per_particle(
+        self, u, SELECTION, dim, client_EinsteinMSD
+    ):
         # check fft and simple give same result for each particle in each
         # dimension
         m_simple = MSD(u, SELECTION, msd_type=dim, fft=False)
@@ -228,7 +232,9 @@ class TestMSDFFT(object):
             ("z", 1),
         ],
     )
-    def test_fft_step_traj_all_dims(self, step_traj, NSTEP, dim, dim_factor, client_EinsteinMSD):
+    def test_fft_step_traj_all_dims(
+        self, step_traj, NSTEP, dim, dim_factor, client_EinsteinMSD
+    ):
         # testing the fft algorithm on constant velocity trajectory
         # this should fit the polynomial y=dim_factor*x**2
         # fft based tests require a slight decrease in expected prescision
@@ -272,22 +278,26 @@ class TestMSDFFT(object):
         norm = np.linalg.norm(msd_rw.results.timeseries)
         val = 3932.39927487146
         assert_almost_equal(norm, val, decimal=5)
-        
+
+
 @pytest.mark.parametrize(
     "classname,is_parallelizable",
     [
         (mda.analysis.msd, True),
-    ]
+    ],
 )
 def test_class_is_parallelizable(classname, is_parallelizable):
-    assert classname.EinsteinMSD._analysis_algorithm_is_parallelizable == is_parallelizable
+    assert (
+        classname.EinsteinMSD._analysis_algorithm_is_parallelizable
+        == is_parallelizable
+    )
+
 
 @pytest.mark.parametrize(
     "classname,backends",
     [
-        (mda.analysis.msd,  ('serial', 'multiprocessing', 'dask')),
-    ]
+        (mda.analysis.msd, ("serial", "multiprocessing", "dask")),
+    ],
 )
 def test_supported_backends(classname, backends):
     assert classname.EinsteinMSD.get_supported_backends() == backends
-    
