@@ -307,10 +307,13 @@ class EinsteinMSD(AnalysisBase):
 
     @classmethod
     def get_supported_backends(cls):
-        return ('serial', 'multiprocessing', 'dask',)
+        return (
+            "serial",
+            "multiprocessing",
+            "dask",
+        )
 
     _analysis_algorithm_is_parallelizable = True
-
 
     def __init__(self, u, select="all", msd_type="xyz", fft=True, **kwargs):
         r"""
@@ -405,12 +408,16 @@ class EinsteinMSD(AnalysisBase):
     @staticmethod
     def f(arrs):
         pass
-    
+
     def _get_aggregator(self):
-        return ResultsGroup(lookup={'_position_array': ResultsGroup.ndarray_vstack, 
-                                    'msds_by_particle':  self.f,
-                                    'timeseries':  self.f})
-    
+        return ResultsGroup(
+            lookup={
+                "_position_array": ResultsGroup.ndarray_vstack,
+                "msds_by_particle": self.f,
+                "timeseries": self.f,
+            }
+        )
+
     def _conclude(self):
         self.results.msds_by_particle = np.zeros(
             (self.n_frames, self.n_particles)
