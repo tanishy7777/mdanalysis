@@ -299,13 +299,18 @@ class EinsteinMSD(AnalysisBase):
 
 
     .. versionadded:: 2.0.0
+    .. versionchanged:: 2.9.0
+       Enabled **parallel execution** with the ``multiprocessing`` and ``dask``
+       backends; use the new method :meth:`get_supported_backends` to see all
+       supported backends.
     """
 
     @classmethod
     def get_supported_backends(cls):
-        return ('serial',)
+        return ('serial', 'multiprocessing', 'dask',)
 
-    _analysis_algorithm_is_parallelizable = False
+    _analysis_algorithm_is_parallelizable = True
+
 
     def __init__(self, u, select="all", msd_type="xyz", fft=True, **kwargs):
         r"""
@@ -339,6 +344,7 @@ class EinsteinMSD(AnalysisBase):
         # local
         self.ag = u.select_atoms(self.select)
         self.n_particles = len(self.ag)
+        self.results._position_array = None
         self._position_array = None
 
         # result
@@ -350,6 +356,9 @@ class EinsteinMSD(AnalysisBase):
         # these need to be zeroed prior to each run() call
         self.results.msds_by_particle = np.zeros(
             (self.n_frames, self.n_particles)
+        )
+        self.results._position_array = np.zeros(
+            (self.n_frames, self.n_particles, self.dim_fac)
         )
         self._position_array = np.zeros(
             (self.n_frames, self.n_particles, self.dim_fac)
@@ -387,8 +396,25 @@ class EinsteinMSD(AnalysisBase):
         self._position_array[self._frame_index] = self.ag.positions[
             :, self._dim
         ]
+        self.results._position_array[self._frame_index] = self.ag.positions[
+            :, self._dim
+        ]
 
+    # aggregator wants 'timeseries' and 'msds_by_particle' to be passed
+    # so using this as a workaround
+    @staticmethod
+    def f(arrs):
+        pass
+    
+    def _get_aggregator(self):
+        return ResultsGroup(lookup={'_position_array': ResultsGroup.ndarray_vstack, 
+                                    'msds_by_particle':  self.f,
+                                    'timeseries':  self.f})
+    
     def _conclude(self):
+        self.results.msds_by_particle = np.zeros(
+            (self.n_frames, self.n_particles)
+        )
         if self.fft:
             self._conclude_fft()
         else:
@@ -397,6 +423,7 @@ class EinsteinMSD(AnalysisBase):
     def _conclude_simple(self):
         r"""Calculates the MSD via the simple "windowed" algorithm."""
         lagtimes = np.arange(1, self.n_frames)
+        self._position_array = self.results._position_array
         positions = self._position_array.astype(np.float64)
         for lag in tqdm(lagtimes):
             disp = positions[:-lag, :, :] - positions[lag:, :, :]
@@ -420,7 +447,7 @@ class EinsteinMSD(AnalysisBase):
 
                 or set fft=False"""
             )
-
+        self._position_array = self.results._position_array
         positions = self._position_array.astype(np.float64)
         for n in tqdm(range(self.n_particles)):
             self.results.msds_by_particle[:, n] = tidynamics.msd(
