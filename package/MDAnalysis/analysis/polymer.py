@@ -124,11 +124,10 @@ class PersistenceLength(AnalysisBase):
        C(n) = \langle \cos\theta_{i, i+n} \rangle =
                \langle \mathbf{a_i} \cdot \mathbf{a_{i+n}} \rangle
                
-    where :math:`\mathbf{a}_i \text{ and } \mathbf{a}_{i+n}` are unit vectors
-    along the bonds. (Because for two vectors a and b, 
-    :math:`\mathbf{a} \cdot \mathbf{b} = |\mathbf{a}| |\mathbf{b}| \cos{\alpha}`)
-    – see 
-    `Wikipedia <https://en.wikipedia.org/wiki/Dot_product#Geometric_definition>`_.
+    where :math:`a_i` and :math:`a_{i+n}` are unit vectors
+    along the bonds. (Because for two vectors :math:`\mathbf{a}` and :math:`\mathbf{b}`, 
+    :math:`\mathbf{a} \cdot \mathbf{b} = |\mathbf{a}| |\mathbf{b}| \cos{\alpha}`,
+    where :math:`\alpha` is the angle between the two vectors.)
 
     An exponential decay is then fitted to this, which yields the
     persistence length
