@@ -123,9 +123,9 @@ class PersistenceLength(AnalysisBase):
 
        C(n) = \langle \cos\theta_{i, i+n} \rangle =
                \langle \mathbf{a_i} \cdot \mathbf{a_{i+n}} \rangle
-               
+
     where :math:`a_i` and :math:`a_{i+n}` are unit vectors
-    along the bonds. (Because for two vectors :math:`\mathbf{a}` and :math:`\mathbf{b}`, 
+    along the bonds. (Because for two vectors :math:`\mathbf{a}` and :math:`\mathbf{b}`,
     :math:`\mathbf{a} \cdot \mathbf{b} = |\mathbf{a}| |\mathbf{b}| \cos{\alpha}`,
     where :math:`\alpha` is the angle between the two vectors.)
 
